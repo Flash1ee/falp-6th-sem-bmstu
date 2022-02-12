@@ -1,1 +1,1 @@
-# filp-6th-sem-bmstu
+# falp-6th-sem-bmstu
