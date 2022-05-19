@@ -1,0 +1,62 @@
+\section*{Задание 1}
+\section*{Постановка задачи}
+
+Составить программу — базу знаний, с помощью которой можно определить, например, множество студентов, обучающихся в одном ВУЗе. Студент может одновременно обучаться в нескольких ВУЗах. Привести примеры возможных вариантов вопросов и варианты ответов (не менее 3-х), Описать порядок формирования вариантов ответа.
+
+\subsection*{Решение}
+\begin{lstlisting}
+domains
+    id = unsigned.
+    name, university = symbol.
+
+predicates
+    StudentID(id, name).
+    StudyIn(id, university).
+    studentsFromUniversity(university, id, name).
+
+clauses
+    StudentID(0, "Dmitriy").
+    StudentID(1, "Dmitriy").
+    StudentID(2, "Volodya").
+    StudentID(3, "Maxim").
+    StudentID(4, "Nikolay").
+
+    StudyIn(0, "BMSTU").
+    StudyIn(1, "MSU").
+    StudyIn(2, "MAI").
+    StudyIn(3, "BMSTU").
+    StudyIn(4, "BMSTU").
+    StudyIn(0, "KTU").
+    StudyIn(2, "Cambridge").
+    StudyIn(3, "MIREA").
+
+    studentsFromUniversity(University, Id, Name) :- StudentID(Id, Name), StudyIn(Id, University).
+
+goal
+    StudentID(ID, "Dmitriy").
+    % StudentID(0, Name).
+
+    % StudyIn(ID, "BMSTU").
+    % StudyIn(0, U).
+
+    % studentsFromUniversity("BMSTU", ID, NAME).
+    % studentsFromUniversity(U, ID, "Maxim").
+\end{lstlisting}
+
+Данная база знаний содержит информацию о студентах (номер, имя, вуз).\\
+
+С помощью первого вопроса получаются все идентификаторы студентов, имя которых Dmitriy. Происходит проход сверху вниз по всем фактам
+предиката StudentID(id, name) и осуществляется унификация с
+StudentID(ID, "Dmiitriy"). Унификацию успешно проходит два факта:
+StudentID(0, "Dmitriy") и StudentID(1, "Dmitriy").
+
+\\
+
+С помощью третьего вопроса получаются все студенты, которые обучаются в МГТУ. Происходит проход по всем фактам предиката StudyIn(ID, university) и осуществляется унификация с StudyIn(ID, "BMSTU"). Успешно унификацию проходят факты StudyIn(0, "BMSTU"), StudyIn(1,
+"BMSTU"), StudyIn(3, "BMSTU"), StudyIn(4, "BMSTU").  
+
+\\
+
+С помощью шестого вопроса получаются все университеты и идентификаторы учащихся, имя которых Maxim. Происходит проход по всем фактам
+предикатов StudentID(id, name), StudyIn(id, university) и осуществляется унификация с studentsFromUniversity(University, Id, "Maxim"). Успешно унификацию проходят правила StudentID(0, "Maxim"), StudyIn(0,
+"BMSTU") и StudentID(0, "Maxim"), studyIn(0, "MiREA").

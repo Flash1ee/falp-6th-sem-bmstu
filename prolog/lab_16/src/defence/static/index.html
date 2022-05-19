@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui" />
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <style>
+        .v-list {
+            background: none!important;
+        }
+        
+        .v-list-item__title {
+            background: #424242;
+            color: #fff;
+            padding: 20px;
+        }
+        
+        .v-list-item__subtitle {
+            background: #424242;
+            color: #fff!important;
+            padding: 20px;
+        }
+    </style>
+    <div id="app">
+        <v-app>
+            <v-main style="background:url(./ulk.jpeg); background-size:cover; background-attachment: fixed;">
+                <v-container>
+                    <div class="row">
+                        <v-card class="mx-auto" max-width="400" tile style="background:none;">
+                            Преподаватели:
+                            <v-list>
+                                <v-btn @click="addMentorFunc" color="pink" class="mr-4">
+                                    Добавить преподавателя
+                                </v-btn>
+                                <v-list-item link v-for="mentor in mentors" @click="getMentor(mentor.login)">
+                                    <v-list-item-content two-line>
+                                        <v-list-item-title>{{mentor.name}}</v-list-item-title>
+                                        <v-list-item-subtitle>{{mentor.login}} -- Бюджет: {{mentor.budget}} Платно: {{mentor.money}}
+                                        </v-list-item-subtitle>
+                                    </v-list-item-content>
+                                </v-list-item>
+
+                            </v-list>
+
+                        </v-card>
+
+                        <v-card class="mx-auto" max-width="400" tile style="background:none;">
+                            Студенты:
+
+                            <v-list>
+
+                                <v-btn @click="addStudentFunc" color="pink" class="mr-4">
+                                    Добавить студента
+                                </v-btn>
+
+                                <v-list-item link v-for="student in students" @click="getStudent(student.login)">
+                                    <v-list-item-content two-line>
+                                        <v-list-item-title>{{student.name}} </v-list-item-title>
+                                        <v-list-item-subtitle>{{student.login}} -- {{student.type}}
+                                        </v-list-item-subtitle>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-list>
+
+                        </v-card>
+                    </div>
+
+                </v-container>
+                <v-dialog v-model="studentDialog" v-if="student" fullscreen hide-overlay transition="dialog-bottom-transition" scrollable>
+                    <v-card>
+
+
+                        <v-card-title class="text-h5 grey lighten-2">
+                            <v-btn icon @click="studentDialog = false">
+                                <v-icon>mdi-close</v-icon>
+                            </v-btn>
+
+                            {{student.name}}
+                        </v-card-title>
+
+                        <v-card-text>
+                            {{student.login}} <br /> {{student.type}} <br />
+                            <v-list>
+                                <v-list-item v-for="interes in student.interes">
+                                    <v-list-item-content>
+                                        <v-list-item-title>{{interes}} </v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-list>
+                            <v-btn color="pink" class="mr-4" @click="addInteresFunc(student.login)">
+                                Добавить интерес
+                            </v-btn>
+                        </v-card-text>
+                    </v-card>
+                </v-dialog>
+
+                <v-dialog v-model="mentorDialog" v-if="mentor" fullscreen hide-overlay transition="dialog-bottom-transition" scrollable>
+                    <v-card>
+                        <v-card-title class="text-h5 grey lighten-2">
+                            <v-btn icon @click="mentorDialog = false">
+                                <v-icon>mdi-close</v-icon>
+                            </v-btn>
+                            {{mentor.name}}
+                        </v-card-title>
+
+                        <v-card-text>
+                            {{mentor.login}} -- Бюджет: {{mentor.budget}} Платно: {{mentor.money}}
+
+                            <v-list>
+                                <v-list-item v-for="interes in mentor.interes">
+                                    <v-list-item-content>
+                                        <v-list-item-title>{{interes}} </v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-list>
+                            <v-btn color="pink" class="mr-4" @click="addInteresFunc(mentor.login)">
+                                Добавить интерес
+                            </v-btn>
+
+                            <v-list v-for="t in ['budget', 'money']">
+                                {{t}}
+                                <v-list-item link v-for="student in mentor.students[t].slice(0,mentor[t])" @click="getStudent(student[0])">
+                                    <v-list-item-content>
+                                        <v-list-item-title>{{student[1]}} -- Общих интересов {{student[3]}}
+                                        </v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+
+                                <v-expansion-panels multiple>
+                                    <v-expansion-panel>
+                                        <v-expansion-panel-header>Те кто пролетел</v-expansion-panel-header>
+                                        <v-expansion-panel-content>
+                                            <v-list-item link v-for="student in mentor.students[t].slice(mentor[t])" @click="getStudent(student[0])">
+                                                <v-list-item-content>
+                                                    <v-list-item-title>{{student[1]}} -- Общих интересов {{student[3]}}
+                                                    </v-list-item-title>
+                                                </v-list-item-content>
+                                            </v-list-item>
+                                        </v-expansion-panel-content>
+                                    </v-expansion-panel>
+                            </v-list>
+                        </v-card-text>
+                    </v-card>
+                </v-dialog>
+
+                <v-dialog v-model="addInteres.modal" fullscreen hide-overlay transition="dialog-bottom-transition" scrollable>
+                    <v-card>
+                        <v-card-title class="text-h5 grey lighten-2">
+                            <v-btn icon @click="addInteres.modal = false">
+                                <v-icon>mdi-close</v-icon>
+                            </v-btn>
+                            Добавить интерес
+                        </v-card-title>
+
+                        <v-card-text>
+                            <v-form @submit.prevent="saveInteres">
+                                <v-text-field v-model="addInteres.inters" label="Название интереса" required></v-text-field>
+                                <v-btn color="pink" class="mr-4" type="submit">
+                                    Сохранить
+                                </v-btn>
+                            </v-form>
+                        </v-card-text>
+                    </v-card>
+                </v-dialog>
+
+                <v-dialog v-model="addStudent.modal" fullscreen hide-overlay transition="dialog-bottom-transition" scrollable>
+                    <v-card>
+                        <v-card-title class="text-h5 grey lighten-2">
+                            <v-btn icon @click="addStudent.modal = false">
+                                <v-icon>mdi-close</v-icon>
+                            </v-btn>
+                            Добавить студента
+                        </v-card-title>
+
+                        <v-card-text>
+                            <v-form @submit.prevent="saveStudent">
+                                <v-text-field v-model="addStudent.login" label="Логин" required></v-text-field>
+                                <v-text-field v-model="addStudent.name" label="имя" required></v-text-field>
+                                <v-select v-model="addStudent.type" :items="['budget', 'money']" label="Тип" required></v-select>
+
+                                <v-btn color="pink" class="mr-4" type="submit">
+                                    Сохранить
+                                </v-btn>
+                            </v-form>
+                        </v-card-text>
+                    </v-card>
+                </v-dialog>
+
+                <v-dialog v-model="addMentor.modal" fullscreen hide-overlay transition="dialog-bottom-transition" scrollable>
+                    <v-card>
+                        <v-card-title class="text-h5 grey lighten-2">
+                            <v-btn icon @click="addMentor.modal = false">
+                                <v-icon>mdi-close</v-icon>
+                            </v-btn>
+                            Добавить преподавателя
+                        </v-card-title>
+
+                        <v-card-text>
+                            <v-form @submit.prevent="saveMentor">
+                                <v-text-field v-model="addMentor.login" label="Логин" required></v-text-field>
+                                <v-text-field v-model="addMentor.name" label="имя" required></v-text-field>
+                                <v-text-field v-model="addMentor.budget" label="Кол-во бюджетных мест" required></v-text-field>
+                                <v-text-field v-model="addMentor.money" label="Кол-во платных мест" required></v-text-field>
+
+                                <v-btn color="pink" class="mr-4" type="submit">
+                                    Сохранить
+                                </v-btn>
+                            </v-form>
+                        </v-card-text>
+                    </v-card>
+                </v-dialog>
+            </v-main>
+        </v-app>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <script>
+        new Vue({
+            el: "#app",
+            vuetify: new Vuetify(),
+            data: {
+                students: [],
+                mentors: [],
+                student: null,
+                mentor: null,
+                studentDialog: false,
+                mentorDialog: false,
+
+                addInteres: {
+                    modal: false,
+                    login: "",
+                    inters: "",
+                },
+                addStudent: {
+                    modal: false,
+                    login: "",
+                    name: "",
+                },
+                addMentor: {
+                    modal: false,
+                    login: "",
+                    name: "",
+                },
+            },
+            created() {
+                this.getStudents();
+                this.getMentors();
+            },
+            methods: {
+                async getStudents() {
+                    let data = await fetch("/students");
+                    let d = await data.json();
+                    this.students = d.students;
+                },
+                async getMentors() {
+                    let data = await fetch("/mentors");
+                    let d = await data.json();
+                    this.mentors = d.mentors;
+                },
+
+                async getStudent(login) {
+                    let data = await fetch("/student/" + login);
+                    let d = await data.json();
+                    this.student = d.student;
+                    this.studentDialog = true;
+                },
+
+                async getMentor(login) {
+                    let data = await fetch("/mentor/" + login);
+                    let d = await data.json();
+                    this.mentor = d.mentor;
+                    this.mentorDialog = true;
+                },
+
+                addInteresFunc(login) {
+                    this.addInteres.login = login;
+                    this.addInteres.inters = "";
+                    this.addInteres.modal = true;
+                },
+
+                async saveInteres() {
+                    await fetch(
+                        `/add/interes?login=${this.addInteres.login}&interes=${this.addInteres.inters}`
+                    );
+                    this.addInteres.modal = false;
+
+                    if (this.studentDialog) this.getStudent(this.student.login);
+
+                    if (this.mentorDialog) this.getMentor(this.mentor.login);
+                },
+                addStudentFunc() {
+                    this.addStudent.login = "";
+                    this.addStudent.name = "";
+                    this.addStudent.type = "budget";
+                    this.addStudent.modal = true;
+                },
+                async saveStudent() {
+                    await fetch(
+                        `/add/student?login=${this.addStudent.login}&name=${this.addStudent.name}&type=${this.addStudent.type}`
+                    );
+                    this.addStudent.modal = false;
+
+                    this.getStudents();
+                },
+
+                addMentorFunc() {
+                    this.addMentor.login = "";
+                    this.addMentor.name = "";
+                    this.addMentor.budget = 0;
+                    this.addMentor.money = 0;
+                    this.addMentor.modal = true;
+                },
+                async saveMentor() {
+                    await fetch(
+                        `/add/mentor?login=${this.addMentor.login}&name=${this.addMentor.name}&budget=${this.addMentor.budget}&money=${this.addMentor.money}`
+                    );
+
+                    this.addMentor.modal = false;
+
+                    this.getMentors();
+                },
+            },
+        });
+    </script>
+</body>
+
+</html>
