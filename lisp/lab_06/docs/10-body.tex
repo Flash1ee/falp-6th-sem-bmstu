@@ -1,0 +1,89 @@
+\section*{1.Напишите функцию, которая уменьшает на 10 все числа из списка-аргумента этой функции}
+
+\lstinputlisting[
+	caption={Задание 1},
+	label={lst:t1},
+	language=lisp,
+	linerange={3-7},
+	]{../src/main.lsp}
+
+
+\section*{2. Напишите функцию, которая умножает на заданное число-аргумент все числа из заданного списка-аргумента, когда а) все элементы списка -- числа; б) элементы списка -- любые объекты}
+
+\lstinputlisting[
+	caption={Задание 2},
+	label={lst:t2},
+	language=lisp,
+	linerange={10-20},
+	]{../src/main.lsp}
+
+\section*{3. Напишите функцию, которая по своему списку-аргументу lst определяет, является ли он палиндромом}
+
+\lstinputlisting[
+	caption={Задание 3},
+	label={lst:t3},
+	language=lisp,
+	linerange={23-27},
+	]{../src/main.lsp}
+
+
+\section*{4. Написать предикат set-equal, который возвращает T, если два его множества-аргумента содержат одни и те же элементы, порядок которых не имеет значения}
+
+\lstinputlisting[
+	caption={Задание 4},
+	label={lst:t4},
+	language=lisp,
+	linerange={30-42},
+	]{../src/main.lsp}
+
+
+\section*{5. Написать функцию, которая получает как аргумент список чисел а возвращает список квадратов этих чисел в том же порядке}
+
+\lstinputlisting[
+	caption={Задание 5},
+	label={lst:t5},
+	language=lisp,,
+	linerange={45-48},
+	]{../src/main.lsp}
+
+
+\section*{6. Напишите функцию select-between, которая из списка-аргумента из 5 чисел выбирает те, которые расположены между двумя указанными границами-аргументами и возвращает их в виде списка (сортированного +2 балла)}
+
+\lstinputlisting[
+	caption={Задание 6},
+	label={lst:t6},
+	language=lisp,
+	linerange={51-60},
+	]{../src/main.lsp}
+
+\section*{7. Напишите функцию, вычисляющую декартово произведение двух своих списков-аргументов}
+
+\lstinputlisting[
+	caption={Задание 7},
+	label={lst:t7},
+	language=lisp,
+	linerange={63-70},
+	]{../src/main.lsp}
+	
+\section*{8. Почему так реализовано reduce, в чем причина?}
+\begin{lstlisting}
+(reduce #'+ ())
+; > 0
+; Так как функция + возвращает 0 при количестве аргументов 0
+; reduce сработает для пустого списка
+; Если бы функция не могла принимать 0 аргументов, то была бы ошибка
+(reduce #'/ ())
+; invalid number of arguments: 0
+;    [Condition of type SB-INT:SIMPLE-PROGRAM-ERROR]
+
+\end{lstlisting}
+
+\section*{9. Написать функцию, которая вычисляет сумму длин всех элементов}
+
+\lstinputlisting[
+	caption={Задание 9},
+	label={lst:t9},
+	language=lisp,
+	linerange={72-77},
+	]{../src/main.lsp}
+

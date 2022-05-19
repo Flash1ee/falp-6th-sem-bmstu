@@ -1,0 +1,205 @@
+\section*{Задание 1}
+\subsection*{Постановка задачи}
+
+Составить диаграмму вычисления следующих выражений:
+
+\begin{enumerate}
+	\item (equal 3 (abs -3))
+	\item (equal (+ 1 2) 3)
+	\item (equal (* 4 7) 21)
+	\item (equal (* 2 3) (+ 7 2))
+	\item (equal (- 7 3) (* 3 2)))
+	\item (equal (abs (- 2 4)) 3)
+\end{enumerate}
+
+\subsection*{Решение}
+\lstinputlisting[language=lisp]{../src/1.lsp}
+
+\section*{Задание 2}
+\subsection*{Постановка задачи}
+
+Написать функцию, вычисляющую гипотенузу прямоугольного треугольника по заданным катетам и составить диаграмму ее вычисления. Решение.
+
+\subsection*{Решение}
+\lstinputlisting[language=lisp]{../src/2.lsp}
+
+
+\section*{Задание 3}
+\subsection*{Условие задачи}
+Написать функцию, вычисляющую объем параллелепипеда по 3-м его сторонам, и составить диаграмму ее вычисления.
+
+\subsection*{Решение}
+\lstinputlisting[language=lisp]{../src/3.lsp}
+
+\section*{Задание 4}
+\subsection*{Условие задачи}
+Каковы результаты вычисления следующих выражений? (объяснить возможную ошибку и
+варианты ее устранения)
+
+\subsection*{Решение}
+
+\begin{lstlisting}[label=4xd,caption=Решение задания №4, language=lisp]
+(list 'a c); THE VARIABLE C IS UNBOUND; (list `a `c) -> (AC)
+(cons `a (b c)); THE VARIABLE C IS UNBOUND; (cons `a `(bc)) -> (ABC)
+(cons `a `(b c)) -> (A B C)
+(caddy (1 2 3 4 5)) -> (caddr `(1 2 3 4 5)) -> 4
+(cons `a `b `c); INVALID NUMBER OF ARGUMENTS; (cons `a `b) -> (A . B)
+(list `a (b c)); THE VARIABLE C IS UNBOUND; (list `a `(b c)) -> (A (BC))
+(list a `(b c)); THE VARIABLE A IS UNBOUND; (list `a `(b c)) -> (A (BC))
+(list (+ 1 `(length `(1 2 3)))) ; (LENGTH `(1 2 3)) is not of type NUMBER; (list (+1 (length `(123)))) -> 4
+\end{lstlisting}
+
+\section*{Задание 5}
+\subsection*{Условие задачи}
+Написать функцию \textbf{longer\_then} от двух списков- аргументов, которая возвращает T, если первый аргумент имеет большую длину.
+
+\subsection*{Решение}
+
+\begin{lstlisting}[label=5xd,caption=Решение задания №5, language=lisp]
+(defun longer_than (l1 l2) (> (length l1) (length l2)))
+\end{lstlisting}
+
+\section*{Задание 6}
+\subsection*{Условие задачи}
+Каковы результаты вычисления следующих выражений? 
+
+\subsection*{Решение}
+
+\begin{lstlisting}[label=6xd,caption=Решение задания №6, language=lisp]
+(cons 3 (list 5 6)) -> (356)
+(cons 3 `(list 5 6)) -> (3 LIST 5 6)
+(list 3 'from 9 'lives (- 9 3)) -> 3 FROM 9 LIVES 6
+(+ (length for 2 too)) (car '(21 22 23))) -> error
+(cdr `(cons is short for ans)) -> (IS SHORT FOR ANS)
+(car (list one two)); VARIABLE ONE IS UNBOUND; (car (list `one `two)); -> ONE
+(car (list `one `two)) -> ONE
+\end{lstlisting}
+
+\section*{Задание 7}
+\subsection*{Условие задачи}
+Дана функция \textbf{(defun mystery (x) (list (second x) (first x)))}. Какие результаты вычисления следующих выражений?
+
+\subsection*{Решение}
+
+\begin{lstlisting}[label=7xd,caption=Решение задания №7, language=lisp]
+(mystery (one two)) -> error
+(mystery free); error (mystery `(free)) -> (NIL FREE)
+(mystery (last one two)); error; (mystery (last (`one `two))) -> (NIL TWO)
+(mystery one `two); error (mystery `(one two)) -> (TWO ONE)
+\end{lstlisting}
+
+\section*{Задание 8}
+\subsection*{Условие задачи}
+Написать функцию, которая переводит температуру в системе Фаренгейта в  
+температуру по Цельсию (defum f-to-c (temp)…).  
+
+Формулы:  
+c = 5/9*(f-320); f= 9/5*c+32.0.  
+
+Как бы назывался роман Р.Брэдбери "+451 по Фаренгейту" в системе по Цельсию?  
+
+\subsection*{Решение}
+\lstinputlisting[label=7xd,caption=Решение задания №8, language=lisp]{../src/8.lsp}
+
+\section*{Задание 9}
+\subsection*{Условие задачи}
+Что получится при вычисления каждого из выражений?
+
+\subsection*{Решение}
+\begin{lstlisting}[label=7xd,caption=Решение задания №9, language=lisp]
+(list 'cons t NIL); (CONS T NIL)
+(eval (list 'cons t NIL)) ; (T)
+(eval (eval (list 'cons t NIL))) error
+(apply #cons "(t NIL)) 
+(eval NIL)
+(list 'eval NIL) 
+(eval (list 'eval NIL))
+\end{lstlisting}
+
+\section*{Контрольные вопросы}
+
+\textbf{Вопрос 1.} Базис языка Lisp. \newline
+\indent\textbf{Ответ. }
+Базис языка представлен:
+\begin{itemize}
+	\item структурами и атомами;
+	\item функциями;
+\end{itemize}
+
+Функции, входящие в базис языка:
+\begin{itemize}
+	\item atom, eq, cons, car, cdr;
+	\item cond, quote, lambda, eval, label.
+\end{itemize}
+
+
+\textbf{Вопрос 2.} Классификация функций языка Lisp.
+	
+\textbf{Ответ.} 
+	
+\begin{itemize}
+	\item чистые (с фиксированным количеством аргументов) математические функции;
+	\item рекурсивные функции;
+	\item специальные функции – формы (принимают произвольное количество аргументов или по разному обрабатывают аргументы);
+	\item псевдофункции (создающие «эффект» – отображающие на экране процесс обработки данных и т.п.);
+	\item функции с вариативными значениями, выбирающие одно значение;
+	\item функции высших порядков – функционалы (используются для построения синтаксически управляемых программ);
+\end{itemize}
+
+\textbf{Вопрос 3.} Синтаксис элементов языка и их представление в памяти.
+
+
+\textbf{Ответ.}""\newline
+
+
+Точечные пары ::= (<атом>, <атом>) |
+
+(<атом>, <точечная пара>) |
+
+(<точечная пара>, <атом>) |
+
+(<точечная пара>, <точечная пара>)""\newline
+
+\indent Список ::= <пустой список> | <непустой список>, где
+
+<пустой список> ::= () | Nil,
+
+<непустой список> ::= (<первый элемент>, <хвост>),
+
+<первый элемент> ::= <S-выражение>,
+
+<хвост> ::= <список>""\newline
+
+
+\indent \textbf{Список} -- частный случай S-выражения. Любая структура (точечная пара или список) заключаются в круглые скобки:
+
+
+\begin{itemize}
+
+	\item (A . B) -- точечная пара;
+
+	\item $(A)$ -- список из одного элемента;
+
+	\item $Nil$ или $()$ -- пустой список;
+
+	\item (A . (B . (C . (D ()))))) или (A B C D) -- непустой список;
+
+	\item Элементы списка могу являться списками: $((A)(B)(CD))$
+
+\end{itemize}
+
+
+Любая непустая структура в Lisp, в памяти представленна списковой ячейкой, хранящей два указателя: на голову и хвост.""\newline
+
+\textbf{Вопрос 4.} Функции \textbf{car}, \textbf{cdr}.
+	
+\textbf{Ответ.} Функции $car$, $cdr$ являются базовыми функциями доступа к
+данным. car принимает точечную пару или список в качестве аргумента
+и возвращает первый элемент или $Nil$, соответственно. $cdr$ принимает точечную пару или список в качестве аргумента и возвращает все элементы
+кроме первого или $Nil$, соответственно.""\newline
+	
+\textbf{Вопрос 5.} Функции \textbf{list}, \textbf{cons}.
+	
+\textbf{Ответ.} Функции $list$, $cons$ являются функциями создания списков
+($cons$ – базовая, $list$ – нет). $cons$ создает списочную ячейку и устанавливает два указателя на аргументы. $list$ принимает переменное число аргументов и возвращает список, элементы которого – переданные в функцию
+аргументы.
