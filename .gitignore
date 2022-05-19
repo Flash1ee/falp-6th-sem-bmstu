@@ -62,3 +62,10 @@ cmake-build-debug
 *.report.synctex
 *.gz
 *.vscode
+lisp/lab_01/docs/00-title.fdb_latexmk
+*.zip
+*.fdb_latexmk
+*.toc
+*.blg
+*.bbl
+*.synctex(busy)
